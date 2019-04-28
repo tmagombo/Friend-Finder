@@ -149,13 +149,15 @@
     <br>
     <br>
 
-    <button type="submit" style="background-color:darkblue" class="btn btn-primary btn-lg btn-block" id="submit"><i class="fa fa-check-circle" aria-hidden="true"></i>
-     Submit</button>
+    <button type="submit" style="background-color:darkblue" class="btn btn-primary btn-lg btn-block" id="submit"><i
+        class="fa fa-check-circle" aria-hidden="true"></i>
+      Submit</button>
 
     <hr>
     <footer class="footer">
       <div class="container">
-        <p><a href="/api/friends">API Friends List</a> | <a href="https://github.com/tmagombo/Friend-Finder">GitHub Repo</a></p>
+        <p><a href="/api/friends">API Friends List</a> | <a href="https://github.com/tmagombo/Friend-Finder">GitHub
+            Repo</a></p>
       </div>
     </footer>
 
@@ -182,20 +184,20 @@
   </div>
 
   <script type="text/javascript">
-  
 
-    $("#submit").on("click", function(event) {
+
+    $("#submit").on("click", function (event) {
       event.preventDefault();
 
       function validateForm() {
         var isValid = true;
-        $(".form-control").each(function() {
+        $(".form-control").each(function () {
           if ($(this).val() === "") {
             isValid = false;
           }
         });
 
-        $(".chosen-select").each(function() {
+        $(".chosen-select").each(function () {
 
           if ($(this).val() === "") {
             isValid = false;
@@ -221,23 +223,31 @@
             $("#q10").val()
           ]
         };
-          module.exports = userData;
 
+        $.get('/api/friends', function (res){
+          for (var i = 0; i < userData.scores.length; i++) {
+          var sum =+ userData.scores[i]-res[0].scores[i];
+          if(sum<0){
+            sum*-1;
+          }
+        };                    
+        console.log(sum);
 
-
-        $.post("/api/friends", userData, function(data) {
-
-          $("#match-name").text(data.name);
-          $("#match-img").attr("src", data.photo);
-
+          $("#match-name").text(res[0].name);
+          $("#match-img").attr("src", res[0].photo);
           $("#results-modal").modal("toggle");
+       
+        })
 
+        $.post("/api/friends", userData, function (data) {
+          
 
         });
       } else {
         alert("Please fill out all fields before submitting!");
       }
     });
+
   </script>
 
 </body>
